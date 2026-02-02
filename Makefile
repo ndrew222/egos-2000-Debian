@@ -5,7 +5,14 @@
 BOARD       = tangnano20k
 QEMU        = qemu-system-riscv32
 
-ifeq ($(TOOLCHAIN), GNU)
+ifeq ($(TOOLCHAIN), DEBIAN)
+# Use Debian's native RISC-V toolchain.
+# The riscv64-unknown-elf packages target rv32 via -march/-mabi below.
+# They use picolibc as the default C library, which GCC already searches.
+RISCV_CC    = riscv64-unknown-elf-gcc
+OBJDUMP     = riscv64-unknown-elf-objdump
+OBJCOPY     = riscv64-unknown-elf-objcopy
+else ifeq ($(TOOLCHAIN), GNU)
 # Use the official GNU toolchain.
 # https://github.com/riscv-collab/riscv-gnu-toolchain
 RISCV_CC    = riscv32-unknown-elf-gcc
